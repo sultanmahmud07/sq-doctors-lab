@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import '../../../commonStyles/style.css';
+import { AuthContext } from '../../../contexts/AuthProvider';
 
 
 const Navber = () => {
+  const {user, logOut} =useContext(AuthContext);
+  console.log(user);
+
+  const handleSignOut = () => {
+    logOut()
+    .then( () => {})
+    .catch(error => console.error(error))
+    // console.log("clikd");
+  }
 
   const manuItems = <React.Fragment>
     <li><Link to="/home">Home</Link></li>
@@ -11,8 +21,12 @@ const Navber = () => {
     <li><Link to="/appointment">Appointment</Link></li>
     <li><Link to="/reviews">Reviews</Link></li>
     <li><Link to="/contact">Contact Us</Link></li>
-    <li><Link to="/login">Login</Link></li>
+   {
+    user?.uid ?  <li><button onClick={handleSignOut} className='btn btn-outline btn-primary '>Sign Out</button></li> :  <li><Link to="/login">Login</Link></li>
+   }
   </React.Fragment>
+
+
   return (
     <div className='shadow-lg'>
       <div className='common-w'>

@@ -1,11 +1,18 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../../commonStyles/style.css';
 import { AuthContext } from '../../contexts/AuthProvider';
+import Swal from 'sweetalert2'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [error, setError] =useState('')
   const {signIn} =useContext(AuthContext);
+  const location = useLocation();
+  const navigate =useNavigate();
+
+  const from = location.state?.from?.pathname || '/';
 
 
   const handleLogin = data => {
@@ -16,8 +23,17 @@ const Login = () => {
     signIn(email, password)
     .then(result => {
       console.log(result.user);
+      navigate(from, {replace: true})
       setError('')
       form.reset()
+
+
+    Swal.fire(
+  'Login Successfully!',
+  'You clicked the button!',
+  'success'
+)
+      
     })
     .catch(error => {
       console.error(error);

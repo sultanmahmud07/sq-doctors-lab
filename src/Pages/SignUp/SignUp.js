@@ -2,17 +2,36 @@ import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
+import Swal from 'sweetalert2'
+
+
 
 const SignUp = () => {
   const [error, setError] =useState('')
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const {creatUser} =useContext(AuthContext)
+  const {creatUser, updateUser} =useContext(AuthContext)
 
   const handleSigiUp = (data) => {
     creatUser(data.email, data.password)
     .then(result => {
       console.log(result.user);
+      Swal.fire(
+        'Login Successfully!',
+        'You clicked the button!',
+        'success'
+      )
       setError('')
+      
+      //user profile update
+      const userInfo = {
+        displayName: data.name
+      }
+      updateUser(userInfo)
+      .then(() => {})
+      .catch(err => console.log(err))
+
+
+    
       
     })
     .catch(error => {
