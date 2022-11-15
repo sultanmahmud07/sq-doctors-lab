@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../commonStyles/style.css';
+import { AuthContext } from '../../contexts/AuthProvider';
 
 const Login = () => {
+  const [error, setError] =useState('')
+  const {signIn} =useContext(AuthContext);
 
 
   const handleLogin = data => {
@@ -10,6 +13,16 @@ const Login = () => {
     const form =data.target;
     const email =form.email.value;
     const password =form.password.value;
+    signIn(email, password)
+    .then(result => {
+      console.log(result.user);
+      setError('')
+      form.reset()
+    })
+    .catch(error => {
+      console.error(error);
+      setError(error.message)
+    })
     console.log(email, password);
   }
   return (
@@ -32,6 +45,9 @@ const Login = () => {
                   <span className="label-text font-semibold">Password</span>
                 </label>
                 <input type="password" name='password' required className="input input-bordered" />
+                <label className="label">
+                  <span className="label-text font-semibold text-red-700">{error}</span>
+                </label>
                 <label className="label">
                   <Link to='/' className="label-text-alt link link-hover">Forgot password?</Link>
                 </label>

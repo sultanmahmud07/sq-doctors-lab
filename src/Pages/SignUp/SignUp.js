@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthProvider';
 
 const SignUp = () => {
+  const [error, setError] =useState('')
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const {creatUser} =useContext(AuthContext)
 
   const handleSigiUp = (data) => {
-    console.log(data);
-    console.log(errors);
+    creatUser(data.email, data.password)
+    .then(result => {
+      console.log(result.user);
+      setError('')
+      
+    })
+    .catch(error => {
+      console.error(error);
+      setError(error.message)
+    })
+   
+   
 
   }
   return (
@@ -40,6 +53,9 @@ const SignUp = () => {
                 </label>
                 <input type="password" {...register("password", { required: "passwrod in required", minLength: {value: 8, message: "password must be 8 cherecters long"},  pattern:{value:  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/, message: 'password must be strong' }})} className="input input-bordered" />
                 {errors.password && <span className='text-red-700'>{errors.password.message}</span>}
+                <label className="label">
+                  <span className="label-text font-semibold text-red-700">{error}</span>
+                </label>
               </div>
 
               <div className="form-control mt-6">
