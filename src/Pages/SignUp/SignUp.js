@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
 import Swal from 'sweetalert2'
 
@@ -9,7 +9,11 @@ import Swal from 'sweetalert2'
 const SignUp = () => {
   const [error, setError] =useState('')
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const {creatUser, updateUser} =useContext(AuthContext)
+  const {creatUser, updateUser, user} =useContext(AuthContext)
+  const navigate =useNavigate()
+  
+// console.log(user);
+
 
   const handleSigiUp = (data) => {
     creatUser(data.email, data.password)
@@ -27,11 +31,13 @@ const SignUp = () => {
         displayName: data.name
       }
       updateUser(userInfo)
-      .then(() => {})
+      .then(() => {
+        navigate('/')
+      })
       .catch(err => console.log(err))
 
-
-    
+      
+  
       
     })
     .catch(error => {
@@ -56,7 +62,7 @@ const SignUp = () => {
                 <label className="label">
                   <span className="label-text font-semibold">Name</span>
                 </label>
-                <input type="text"{...register("name", { required: true })} className="input input-bordered" />
+                <input type="text" {...register("name", { required: true })} className="input input-bordered" />
                 {errors.name && <span className='text-red-700'>Please provited your name</span>}
               </div>
               <div className="form-control">

@@ -1,8 +1,14 @@
 import { format } from 'date-fns';
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../../../contexts/AuthProvider';
+import Swal from 'sweetalert2'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const BookingModul = ({treatment, setTreatment, selectedDate}) => {
+
+const BookingModul = ({treatment, setTreatment, refetch, selectedDate}) => {
   const {name, slots} =treatment;
+  const {user} =useContext(AuthContext);
   const date =format(selectedDate, 'PP')
 
 
@@ -24,7 +30,36 @@ const BookingModul = ({treatment, setTreatment, selectedDate}) => {
     }
     console.log(booking);
     // add appointment success msg
-    setTreatment(null);
+    fetch('http://localhost:5000/bookings', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(booking)
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+     if(data.acknowledged){
+      setTreatment(null);
+      Swal.fire(
+        'Congratulation!',
+        'You Booking Successfully!',
+        'success'
+      )
+      refetch();
+     }
+     else{
+      Swal.fire(
+        'Alarted!',
+        `${data.message}`,
+        'error'
+      )
+     }
+
+    })
+
+
   }
   return (
     <>
@@ -43,14 +78,15 @@ const BookingModul = ({treatment, setTreatment, selectedDate}) => {
                                 >{slot}</option>)
                             }
                         </select>
-                        <input name="name" type="text" placeholder="Your Name" className="input w-full input-bordered" required />
-                        <input name="email" type="email" placeholder="Email Address" className="input w-full input-bordered" required />
+                        <input name="name" defaultValue={user?.displayName} readOnly type="text" placeholder="Your Name" className="input w-full input-bordered" required />
+                        <input name="email" defaultValue={user?.email} readOnly type="email" placeholder="Email Address" className="input w-full input-bordered" required />
                         <input name="phone" type="text" placeholder="Phone Number" className="input w-full input-bordered" required />
                         <br />
                         <input className='btn btn-accent w-full' type="submit" value="Submit" />
                     </form>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

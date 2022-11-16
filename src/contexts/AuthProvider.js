@@ -23,7 +23,7 @@ const signIn = (email, password) => {
 
 // Update User Profiles >>>
 const updateUser = (userInfo) => {
-  return updateProfile(user, userInfo);
+  return updateProfile(auth.currentUser, userInfo);
 }
 
 // Sign Out >>>
