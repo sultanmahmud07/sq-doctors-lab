@@ -3,17 +3,21 @@ import { useForm } from 'react-hook-form';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
 import Swal from 'sweetalert2'
+import useToken from '../../hooks/UseToken';
 
 
 
 const SignUp = () => {
   const [error, setError] =useState('')
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const {creatUser, updateUser, user} =useContext(AuthContext)
+  const {creatUser, updateUser, loading } =useContext(AuthContext);
+  const [createdUserEmail, setCreatedUserEmail] = useState('')
+  const [token] = useToken(createdUserEmail);
   const navigate =useNavigate()
   
-// console.log(user);
-
+  if(token){
+    navigate('/');
+  }
 
   const handleSigiUp = (data) => {
     creatUser(data.email, data.password)
@@ -32,7 +36,8 @@ const SignUp = () => {
       }
       updateUser(userInfo)
       .then(() => {
-        navigate('/')
+        saveUser(data.name, data.email)
+       
       })
       .catch(err => console.log(err))
 
@@ -48,6 +53,26 @@ const SignUp = () => {
    
 
   }
+
+  const  saveUser = (name, email) => {
+    const  user = {name, email};
+    fetch('http://localhost:5000/users', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    })
+    .then(res => res.json())
+    .then(data => {
+      // console.log('save user', data);
+      setCreatedUserEmail(email);
+  
+    })
+  }
+
+
+
   return (
     <div className='common-w'>
       <div className='h-screen flex justify-center items-center'>

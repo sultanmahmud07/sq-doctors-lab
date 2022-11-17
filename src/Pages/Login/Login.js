@@ -5,15 +5,21 @@ import { AuthContext } from '../../contexts/AuthProvider';
 import Swal from 'sweetalert2'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useToken from '../../hooks/UseToken';
 
 const Login = () => {
   const [error, setError] =useState('')
   const {signIn} =useContext(AuthContext);
+  const [loginUserEmail, setLoginUserEmail] =useState('');
+  const [token] =useToken(loginUserEmail);
   const location = useLocation();
   const navigate =useNavigate();
 
   const from = location.state?.from?.pathname || '/';
 
+  if(token){
+    navigate(from, {replace: true})
+  }
 
   const handleLogin = data => {
     data.preventDefault()
@@ -22,8 +28,8 @@ const Login = () => {
     const password =form.password.value;
     signIn(email, password)
     .then(result => {
-      console.log(result.user);
-      navigate(from, {replace: true})
+      setLoginUserEmail(email);
+     
       setError('')
       form.reset()
 
