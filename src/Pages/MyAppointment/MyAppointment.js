@@ -15,7 +15,7 @@ const MyAppointment = () => {
         }
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       return data;
     }
   })
@@ -29,7 +29,7 @@ const MyAppointment = () => {
           
           <thead>
             <tr>
-              <th></th>
+              <th>No:</th>
               <th>Name</th>
               <th>Treatment</th>
               <th>Date</th>

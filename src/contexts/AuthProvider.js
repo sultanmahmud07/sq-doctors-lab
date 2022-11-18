@@ -36,7 +36,7 @@ const logOut = () => {
 // Obgerber state change set
 useEffect( () => {
   const unsubsribe = onAuthStateChanged(auth, currentUser => {
-    console.log("User observing");
+    // console.log("User observing");
     setUser(currentUser)
     setLoading(false)
   })
