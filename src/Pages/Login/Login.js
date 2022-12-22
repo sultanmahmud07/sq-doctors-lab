@@ -8,45 +8,75 @@ import 'react-toastify/dist/ReactToastify.css';
 import useToken from '../../hooks/UseToken';
 
 const Login = () => {
-  const [error, setError] =useState('')
-  const {signIn} =useContext(AuthContext);
-  const [loginUserEmail, setLoginUserEmail] =useState('');
-  const [token] =useToken(loginUserEmail);
+  const [error, setError] = useState('')
+  const { signIn, googleSignIn } = useContext(AuthContext);
+  const [loginUserEmail, setLoginUserEmail] = useState('');
+  const [googleUserEmail, setGoogleUserEmail] = useState('');
+  const [token] = useToken(loginUserEmail);
+  const [tokenGoogle] = useToken(googleUserEmail);
   const location = useLocation();
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
   const from = location.state?.from?.pathname || '/';
 
-  if(token){
-    navigate(from, {replace: true})
+  if (token) {
+    navigate(from, { replace: true })
+  }
+  
+  if (tokenGoogle) {
+    navigate(from, { replace: true })
   }
 
   const handleLogin = data => {
     data.preventDefault()
-    const form =data.target;
-    const email =form.email.value;
-    const password =form.password.value;
+    const form = data.target;
+    const email = form.email.value;
+    const password = form.password.value;
     signIn(email, password)
-    .then(result => {
-      setLoginUserEmail(email);
-     
-      setError('')
-      form.reset()
+      .then(result => {
+        setLoginUserEmail(email);
+
+        setError('')
+        form.reset()
 
 
-    Swal.fire(
-  'Login Successfully!',
-  'You clicked the button!',
-  'success'
-)
-      
-    })
-    .catch(error => {
-      console.error(error);
-      setError(error.message)
-    })
-    console.log(email, password);
+        Swal.fire(
+          'Login Successfully!',
+          'You clicked the button!',
+          'success'
+        )
+
+      })
+      .catch(error => {
+        console.error(error);
+        setError(error.message)
+      })
+    // console.log(email, password);
   }
+
+
+
+  const handleGoogleSignIn = () => {
+    googleSignIn()
+    .then(result => {
+      console.log(result.user);
+      setGoogleUserEmail(result?.user?.email)
+
+      Swal.fire(
+        'Login Successfully!',
+        'You clicked the button!',
+        'success'
+      )
+    })
+    .then(error =>{
+      console.error(error);
+
+    })
+
+  }
+
+
+
   return (
     <div className='common-w'>
       <div className='h-screen flex justify-center items-center'>
@@ -78,12 +108,12 @@ const Login = () => {
                 <input type="submit" className="btn btn-neutral" value="Login" />
               </div>
             </form>
-            <div> 
+            <div>
               <div className='text-center p-1 text-sm'>
                 <span>New to Doctors Portal?</span><span><Link to='/signup' className='text-secondary font-semibold'>Create new account</Link></span>
               </div>
               <div className="divider">OR</div>
-              <button className="btn btn-outline btn-accent w-full">CONTINUE WITH GOOGLE</button>
+              <button onClick={handleGoogleSignIn} className="btn btn-outline btn-accent w-full">CONTINUE WITH GOOGLE</button>
             </div>
           </div>
 

@@ -16,16 +16,16 @@ const Navber = () => {
   }
 
   const manuItems = <React.Fragment>
-    <li><Link to="/home">Home</Link></li>
-    <li><Link to="/about">About</Link></li>
-    <li><Link to="/appointment">Appointment</Link></li>
-    <li><Link to="/reviews">Reviews</Link></li>
-    <li><Link to="/contact">Contact Us</Link></li>
+    <li><Link className='font-semibold' to="/home">Home</Link></li>
+    <li><Link className='font-semibold' to="/about">About</Link></li>
+    <li><Link className='font-semibold' to="/appointment">Appointment</Link></li>
+    <li><Link className='font-semibold' to="/reviews">Reviews</Link></li>
+    <li><Link className='font-semibold' to="/connect">Contact Us</Link></li>
     {
-      user?.uid &&  <li><Link to="/dashboard">Dashboard</Link></li>
+      user?.uid &&  <li><Link className='font-semibold' to="/dashboard">My Appoinment</Link></li>
     }
    {
-    user?.uid ?  <li><button onClick={handleSignOut} className='btn btn-outline btn-primary '>Sign Out</button></li> :  <li><Link to="/login">Login</Link></li>
+    user?.uid ?  <li><button onClick={handleSignOut} className='btn btn-outline btn-primary '>Sign Out</button></li> :  <li><Link className='btn btn-outline btn-primary ' to="/login">Login</Link></li>
    }
   </React.Fragment>
 
@@ -45,7 +45,7 @@ const Navber = () => {
                 }
               </ul>
             </div>
-            <Link to="/" className="btn btn-ghost normal-case text-xl">Sq-Doctors-Lab</Link>
+            <Link to="/" className="text-xl flex items-end "><span className='text-6xl text-primary font-bold'>S</span><span className='text-3xl text-secondary font-bold'>Q</span><span className='font-bold text-2xl'>-Doctors-Lab</span></Link>
           </div>
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal p-0">

@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const BookingModul = ({treatment, setTreatment, refetch, selectedDate}) => {
-  const {name, slots} =treatment;
+  const {name, price, slots} =treatment;
   const {user} =useContext(AuthContext);
   const date =format(selectedDate, 'PP')
 
@@ -27,10 +27,11 @@ const BookingModul = ({treatment, setTreatment, refetch, selectedDate}) => {
       slot,
       email,
       phone,
+      price
     }
     console.log(booking);
     // add appointment success msg
-    fetch('http://localhost:5000/bookings', {
+    fetch('https://sq-doctors-lab-server.vercel.app/bookings', {
       method: 'POST',
       headers: {
         'content-type': 'application/json'

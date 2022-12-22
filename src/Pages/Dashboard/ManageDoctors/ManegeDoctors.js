@@ -12,7 +12,7 @@ const ManegeDoctors = () => {
     queryKey: ['doctors'],
     queryFn: async () => {
       try {
-        const res = await fetch('http://localhost:5000/doctor', {
+        const res = await fetch('https://sq-doctors-lab-server.vercel.app/doctor', {
           headers: {
             authorization: `bearer ${localStorage.getItem('accessToken')}`
           }
@@ -32,29 +32,29 @@ const ManegeDoctors = () => {
     setDeleteingDoctor(null)
   };
 
-  const handleDeleteDoctor = doctor =>{
-   fetch(`http://localhost:5000/doctors/${doctor._id}`, {
-    method: 'DELETE',
-    headers: {
-      authorization: `bearer ${localStorage.getItem('accessToken')}`
-    }
-   })
-   .then(res => res.json())
-   .then(data => {
-    if(data.deletedCount > 0){
-      refetch();
-      Swal.fire(
-        `Doctor ${doctor.name} deleted successfully`,
-        'You clicked the button!',
-        'success'
-      )
+  const handleDeleteDoctor = doctor => {
+    fetch(`https://sq-doctors-lab-server.vercel.app/doctors/${doctor._id}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: `bearer ${localStorage.getItem('accessToken')}`
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.deletedCount > 0) {
+          refetch();
+          Swal.fire(
+            `Doctor ${doctor.name} deleted successfully`,
+            'You clicked the button!',
+            'success'
+          )
 
-    }
-   })
-  // console.log('click');
+        }
+      })
+    // console.log('click');
   }
 
-  if(isLoading){
+  if (isLoading) {
     return <Loading></Loading>
   };
 
@@ -98,12 +98,12 @@ const ManegeDoctors = () => {
       </div>
       {
         deleteingDoctor && <ConfirmationModal
-        title={`Are you sure you want to delete?`}
-        message={`If you delete ${deleteingDoctor.name}. It cannot be undon`}
-        closeModal={cencelModal}
-        successAction={handleDeleteDoctor}
-        successButton={`Delete`}
-        modalData={deleteingDoctor}
+          title={`Are you sure you want to delete?`}
+          message={`If you delete ${deleteingDoctor.name}. It cannot be undon`}
+          closeModal={cencelModal}
+          successAction={handleDeleteDoctor}
+          successButton={`Delete`}
+          modalData={deleteingDoctor}
         ></ConfirmationModal>
       }
     </div>

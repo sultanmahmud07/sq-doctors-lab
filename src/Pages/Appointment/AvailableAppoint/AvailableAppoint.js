@@ -15,7 +15,7 @@ const AvailableAppoint = ({ selectedDate }) => {
 const {data: appointmentOptions = [], refetch, isLoading } = useQuery({
   queryKey: ['appointmentOptions', date],
   queryFn: async() => {
-    const res = await fetch(`http://localhost:5000/appointmentOptions?date=${date}`);
+    const res = await fetch(`https://sq-doctors-lab-server.vercel.app/appointmentOptions?date=${date}`);
     const data = await res.json();
     return data
   }
@@ -28,7 +28,7 @@ if(isLoading){
 
 // 2 number option >>>>>>>>
 // const {data:appointmentOptions = []} = useQuery({
-//   queryKey: () => fetch('http://localhost:5000/appointmentOptions')
+//   queryKey: () => fetch('https://sq-doctors-lab-server.vercel.app/appointmentOptions')
 //   .then(res => res.json())
 // })
 
@@ -36,7 +36,7 @@ if(isLoading){
 
 // 1 number option >>>>>>
   // useEffect(() => {
-  //   fetch('http://localhost:5000/appointmentOptions')
+  //   fetch('https://sq-doctors-lab-server.vercel.app/appointmentOptions')
   //   .then(res => res.json())
   //   .then (data => setAppointmentOptions(data))
   // },[])

@@ -6,7 +6,7 @@ const AllUsers = () => {
   const { data: users = [], refetch } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
-      const res = await fetch('http://localhost:5000/users');
+      const res = await fetch('https://sq-doctors-lab-server.vercel.app/users');
       const data = await res.json();
       return data;
     }
@@ -15,24 +15,24 @@ const AllUsers = () => {
 
 
   const handleMakeAdmin = id => {
-    fetch(`http://localhost:5000/users/admin/${id}`, {
+    fetch(`https://sq-doctors-lab-server.vercel.app/users/admin/${id}`, {
       method: 'PUT',
       headers: {
         authorization: `bearer ${localStorage.getItem('accessToken')}`
       }
     })
-    .then(res => res.json())
-    .then(data => {
-      console.log(data);
-      if(data.modifiedCount > 0){
-        Swal.fire(
-          'Add admin Successfully!',
-          'You clicked the button!',
-          'success'
-        )
-        refetch();
-      }
-    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if (data.modifiedCount > 0) {
+          Swal.fire(
+            'Add admin Successfully!',
+            'You clicked the button!',
+            'success'
+          )
+          refetch();
+        }
+      })
 
   }
 
@@ -57,7 +57,7 @@ const AllUsers = () => {
                 <th>{i + 1}</th>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td>{ user?.role !== 'admin' && <button onClick={() => handleMakeAdmin(user._id)} className="btn btn-xs text-white btn-primary">Make Admin</button>}</td>
+                <td>{user?.role !== 'admin' && <button onClick={() => handleMakeAdmin(user._id)} className="btn btn-xs text-white btn-primary">Make Admin</button>}</td>
                 <td><button className="btn btn-xs btn-outline btn-error">Delete</button></td>
               </tr>)
             }

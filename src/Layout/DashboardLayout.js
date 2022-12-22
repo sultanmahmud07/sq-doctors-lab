@@ -3,6 +3,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthProvider';
 import useAdmin from '../hooks/useAdmin';
 import Navber from '../Pages/Shared/Navber/Navber';
+import '../commonStyles/style.css'
 
 const DashboardLayout = () => {
   const { user } = useContext(AuthContext);
@@ -19,9 +20,9 @@ const DashboardLayout = () => {
 
 
         </div>
-        <div className="drawer-side">
+        <div className="drawer-side ">
           <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 w-80 text-base-content">
+          <ul className="menu p-4 w-80 text-base-content bg-white">
             {/* <!-- Sidebar content here --> */}
 
             <li><Link to='/dashboard'>My Appointment</Link></li>
