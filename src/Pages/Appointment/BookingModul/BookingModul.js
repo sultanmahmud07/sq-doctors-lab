@@ -4,6 +4,7 @@ import { AuthContext } from '../../../contexts/AuthProvider';
 import Swal from 'sweetalert2'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 
 const BookingModul = ({treatment, setTreatment, refetch, selectedDate}) => {
@@ -83,7 +84,10 @@ const BookingModul = ({treatment, setTreatment, refetch, selectedDate}) => {
                         <input name="email" defaultValue={user?.email} readOnly type="email" placeholder="Email Address" className="input w-full input-bordered" required />
                         <input name="phone" type="text" placeholder="Phone Number" className="input w-full input-bordered" required />
                         <br />
-                        <input className='btn btn-accent w-full' type="submit" value="Submit" />
+                        {
+                          user?.email ? <input className='btn btn-accent w-full' type="submit" value="Submit" /> : <Link to='/login'><input className='btn btn-accent w-full' type="text" value="please login" /></Link>
+                        }
+                        {/* <input className='btn btn-accent w-full' type="submit" value="Submit" /> */}
                     </form>
         </div>
       </div>
